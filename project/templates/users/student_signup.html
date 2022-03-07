@@ -25,33 +25,13 @@
               <!-- {% include 'partials/_alerts.html' %} -->
               <!-- Aletrs -->
               
-              <form action="{% url 'register' %}" method="POST" id="register-form">
+              <form action="{% url 'student_signup' %}" method="POST" id="student-signup-form">
                 {% csrf_token %}
 
-                <div class="form-row">
+                <div class="form-group row">
                   
-                  <!-- Title -->
-                  <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 mr-auto">
-                      <div class="form-group">
-                          <label for="title" class="control-label">Title</label>
-                          <select class="form-control dropdown-btn btn-light dropdown-toggle menu"
-                                  type="button"
-                                  name="title"
-                                  aria-haspopup="true" 
-                                  aria-expanded="false"
-                                  autofocus>
-                                  <!-- required> -->
-                              <option selected="selected" disabled>Choose</option>
-                              <option class="dropdown-item" value="Prof.">Prof.</option>
-                              <option class="dropdown-item" value="Dr.">Dr.</option>
-                              <option class="dropdown-item" value="Mr.">Mr.</option>
-                              <option class="dropdown-item" value="Mrs.">Mrs.</option>
-                          </select>
-                      </div>
-                  </div>
-
                   <!-- first name -->
-                  <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3 mx-auto">
+                  <div class="col-6">
                       <div class="form-group">
                         <label for="firstName" class="control-label">First name*</label>
                         <input  type="text" 
@@ -59,14 +39,13 @@
                                 name="firstname" 
                                 placeholder="First Name" 
                                 class="form-control" 
-                                
                                 autofocus required/> 
                       </div>
                   </div>
                 
 
                   <!-- last name -->
-                  <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3 mx-auto">
+                  <div class="col-6">
                     <div class="form-group">
                       <label for="lastName" class="control-label">Last name*</label>
                       <input  type="text" 
@@ -74,120 +53,14 @@
                               name="lastname" 
                               placeholder="Last Name" 
                               class="form-control" 
-                              
                               autofocus required/> 
                     </div>
                   </div>
 
-                  <!-- company -->
-                  <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3 ml-auto">
-                    <div class="form-group">
-                      <label for="company" class="control-label">Company Name</label>
-                      <input  type="text" 
-                              id="company" 
-                              name="company" 
-                              placeholder="Company Name" 
-                              class="form-control" 
-                              {% if user.is_authenticated  %} 
-                                value="{{user.company}}"
-                              {% endif %}
-                              autofocus >
-                    </div>
-                  </div>
-
                 </div>
 
-
-                <div class="form-row">
-
-                  <!-- Address -->
-                  <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                      <div class="form-group">
-                        <label for="address" class="control-label">Address*</label>
-                        <input  type="text" 
-                                name="address" 
-                                placeholder="Address" 
-                                class="form-control" 
-                                {% if user.is_authenticated  %} 
-                                  value="{{user.address}}"
-                                {% endif %}
-                                autofocus required/>
-                      </div>
-                  </div>
-                
-                </div>
-
-                <div class="form-row">
-                  
-                  <!-- Zipcode -->
-                  <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                   <div class="form-group">
-                      <label for="zipcode" class="control-label">Zipcode*</label>
-                      <input  type="text" 
-                              id="zipcode" 
-                              name="zipcode" 
-                              placeholder="Zipcode" 
-                              class="form-control" 
-                              {% if user.is_authenticated  %} 
-                                value="{{user.zipcode}}"
-                              {% endif %}
-                              autofocus required />
-                    </div>
-                  </div>
-
-                  <!-- city -->
-                    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                        <div class="form-group">
-                          <label for="city" class="control-label">City*</label>
-                          <input  type="text" 
-                                  id="city"   
-                                  placeholder="City" 
-                                  name="city" 
-                                  class="form-control" 
-                                  {% if user.is_authenticated  %} 
-                                      value="{{user.city}}"
-                                  {% endif %}
-                                  autofocus required   />
-                        </div>
-                    </div>
-
-                
-                  <!-- country -->
-                    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                        <div class="form-group">
-                          <label for="country" class="control-label">Country*</label>
-                          <select class="form-control dropdown-btn btn-light dropdown-toggle menu"
-                                  type="button"
-                                  name="country"
-                                  id="country"
-                                  aria-haspopup="true" 
-                                  aria-expanded="false"
-                                  autofocus 
-                                  required>                          
-                                    <option value="" selected disabled="disabled">Choose</option>
-                                    {% for key, value in country_choices.items %}
-                                      <option value="{{ key }}">{{ value }}</option>
-                                    {% endfor %}
-                          </select>
-                          
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                  <!-- website -->
-                  <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                    <div class="form-group">
-                      <label for="website" class="control-label">Website</label>
-                      <input  type="text" 
-                              id="website" 
-                              placeholder="Your website address" 
-                              name="website" 
-                              class="form-control" 
-                              autofocus/>
-                    </div>
-                  </div>
-
+                <div class="form-group row my-2">
+              
                   <!-- Email -->
                   <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                       <div class="form-group">
@@ -204,73 +77,35 @@
                                 required />
                       </div>
                   </div>
+                  
+                  <!-- department -->
+                  <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                    <div class="form-group my-2">
+                        <label for="dept_name" class="control-label">Department</label>
+                        <select class="form-control dropdown-btn btn-light dropdown-toggle menu"
+                                type="button"
+                                name="dept_name"
+                                id="dept_name"
+                                aria-haspopup="true" 
+                                aria-expanded="false"
+                                autofocus required>   
+
+                        <!-- <option class="subject-item" selected value="QuoteList" disabled="disabled">Quote List</option> -->
+                        <!-- <option disabled="disabled"> General</option> -->
+                        <option disabled="disabled"> Departments</option>
+                        {% if departments %}
+                            {% for key in departments %}
+                                <!-- <option class="subject-item" selected value="{{ key }}">{{ value }}</option> -->
+                                <option class="subject-item" value="{{ key }}">{{ key }}</option>
+                            {% endfor %}
+                        {% endif %}
+                        </select>
+                    </div>
+                  </div>
                     
                 </div>
 
-
-                <div class="form-row">
-
-                  <!-- Tel -->
-                  <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                        <div class="form-group">
-                          <label for="tel" class="control-label">Tel*</label>
-                          <input  type="tel"
-                                  name="tel" 
-                                  id="tel" 
-                                  placeholder="Tel" 
-                                  class="form-control" 
-                                  pattern="[0-9]{4}-[0-9]{2-3}-[0-9]{4}"
-                                  {% if user.is_authenticated  %} 
-                                          value="{{user.tel}}"
-                                  {% endif %}
-                                  required />
-                                  <!-- <small>Format: 1234-45[6]-[6]798 - Your phone number won't be disclosed anywhere</small> -->
-                        </div>
-                  </div>
-
-                  <!-- mobile number -->
-                  <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                    <div class="form-group">
-                      <label for="mobile" class="control-label">Mobile Number*</label>
-                      <input  type="tel"
-                              name="mobile" 
-                              id="mobile" 
-                              placeholder="Mobile Number" 
-                              class="form-control" 
-                              pattern="[0-9]{4}-[0-9]{2-3}-[0-9]{4}"
-                              {% if user.is_authenticated  %} 
-                                      value="{{user.mobile}}"
-                              {% endif %}
-                              required />
-                              <!-- <small>Format: 1234-45[6]-[6]798 - Your phone number won't be disclosed anywhere</small> -->
-                    </div>
-                  </div>
-
-                  <!-- </div>
-
-                  <div class="form-row"> -->
-                  <!-- Fax -->
-                  <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                        <div class="form-group">
-                          <label for="fax" class=" control-label">Fax</label>
-                          <input  type="tel"
-                                  name="fax" 
-                                  id="fax" 
-                                  placeholder="Fax number" 
-                                  class="form-control" 
-                                  pattern="[+][0-9]{4}[-][0-9]{3-4}[-][0-9]{3}[-][0-9]{4}"
-                                  {% if user.is_authenticated  %} 
-                                          value="{{user.fax}}"
-                                  {% endif %}
-                                  />
-                        </div>
-                  </div>
-                
-                </div>
-                
-
-
-                <div class="form-row">
+                <div class="form-group row">
                   
                   <!-- Password -->
                   <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
@@ -309,9 +144,8 @@
                 <!-- Submit button -->
                 <div class="form-row">
                     <div class="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2 mx-auto">
-                        <div class="form-group">
-                          <div class="g-recaptcha mx-auto d-flex align-items-center justify-content-center" data-sitekey="6Lc1oOEZAAAAALKq3eD55ycPvn76F1Zgt225q-v2"></div>
-                          <button class="g-recaptcha btn mt-3 text-capitalize font-weight-bold  text-light btn-block" 
+                        <div class="form-group row">
+                          <button class="btn mt-3 text-capitalize font-weight-bold  text-light btn-block" 
                                   type="submit"
                                   style="background: #4f4f4f; font-size: 20px; ">
                                   Register
@@ -341,6 +175,5 @@
 </script>
 
 {% endblock %} 
-
 
 

@@ -63,8 +63,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    tot_cred = models.IntegerField(null=False, 
-                                   blank=False, 
+    tot_cred = models.IntegerField(null=True, 
+                                   blank=True, 
                                    validators=[MinValueValidator(0, message="Credits should be positive values.")])
     
     dept_name = models.ForeignKey(
@@ -73,12 +73,16 @@ class Student(models.Model):
         null=True,
         blank=True
     )
+    
+    def __str__(self):
+        return str(self.user.get_full_name())
+        
 
 
 class Instructor(models.Model): 
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    salary = models.FloatField(null=False,
-                               blank=False, 
+    salary = models.FloatField(null=True,
+                               blank=True, 
                                validators=[MaxLengthValidator(8, message="No more than 8 digits!"), 
                                            MinValueValidator(29000.0, "Salary should be more than $29000!")])
     
@@ -88,3 +92,6 @@ class Instructor(models.Model):
         null=True,
         blank=True
     )
+    
+    def __str__(self):
+        return str(self.user.get_full_name())

@@ -72,7 +72,7 @@
           
           <!-- footer -->
           <div class="card-footer">
-            <a  href="{% url 'password_reset' %}">
+            <a  href="">
               Forget your password?
             </a>
           </div>
@@ -83,53 +83,76 @@
       </div>
       <!-- Login Sction -->
 
-      <!-- Registration link -->
+      <!-- Registration links -->
       <div class="col-md-6 mx-auto" >
         <div class="card" style="min-height: 400px;">
         
-          <!-- New Customer -->
+          <!-- New account header -->
           <div class="card-header text-light" style="background: #4f4f4f;">
             <h4>
-              <i class="fas fa-user-plus"></i> New Customer</h4>
+              <i class="fas fa-user-plus"></i> Create Account</h4>
           </div>
-          <!-- New Customer -->
-
-          <!-- body -->
-          <div class="card-body pb-5" style="position: relative;">
-            <p>
-              Creating an Alternativ account delivers personalized access to:
-            </p>
-
-            <ul>
-              <li>
-                Product-Specific Guidances
-              </li>
-
-              <li>
-                Collaborative workspaces
-              </li>
-
-              <li>
-                Order status and history
-              </li>
-
-            </ul>
-
-            <p>
-              In order to access full Alternativ functionality, you must create an account.
-            </p>
-
-            
-            <div class="text-center pt-3 ">
-              <a  class="btn btl-block text-light w-100" 
-                  href="{% url 'register' %}" 
-                  style="background: #4f4f4f; ">
-                Register
-              </a>  
+          <!-- New account header -->
+          
+          <!-- Student signup -->
+          <div class="row">
+            <div class="card-body pb-5" style="position: relative;">
+              <p>
+                Creating an Student account delivers personalized access to:
+              </p>
+  
+              <ul>
+                <li>
+                  Feature 1
+                </li>
+  
+              </ul>
+  
+              <p>
+                Lorem ilit. error consectetur labore dolor quasi.
+              </p>
+  
+              
+              <div class="text-center pt-3 ">
+                <a  class="btn btl-block text-light w-100" 
+                    href="{% url 'student_signup' %}" 
+                    style="background: #4f4f4f; ">
+                  Register as Student
+                </a>  
+              </div>
+  
             </div>
-
           </div>
-          <!-- body -->
+          
+          <!-- Instructor signup -->
+          <div class="row">
+            <div class="card-body pb-5" style="position: relative;">
+              <p>
+                Creating an Student account delivers personalized access to:
+              </p>
+  
+              <ul>
+                <li>
+                  Feature 1
+                </li>
+  
+              </ul>
+  
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. molestias, esse error consectetur labore dolor quasi.
+              </p>
+  
+              
+              <div class="text-center pt-3 ">
+                <a  class="btn btl-block text-light w-100" 
+                    href="{% url 'instructor_signup' %}" 
+                    style="background: #4f4f4f; ">
+                  Register as Instructor
+                </a>  
+              </div>
+  
+            </div>
+          </div>
 
           
         
@@ -149,5 +172,4 @@
 </script>
 
 {% endblock %} 
-
 

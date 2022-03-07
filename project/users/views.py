@@ -4,11 +4,6 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, get_object_or_404
-
-
-from .models import User, Student, Instructor
-from .choices import country_choices, generate_code
-
 from datetime import datetime, date
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
@@ -16,9 +11,17 @@ from django.conf import settings
 from django.contrib import messages
 import logging
 from django.utils.timezone import now
+import re
+
+from university.models import Department
+
+
+from .models import User, Student, Instructor
+from .choices import country_choices, generate_code
+
 
 # from .models import Profile
-import re
+
 
 def cleanhtml(raw_html):
     cleanr = re.compile('<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});')
@@ -33,8 +36,14 @@ def studentSignUpView(request):
     """
         student signup view
     """
+    computer = 'computer'
+    physics = 'physics'
+    economics = 'economics'
+    art = 'art'
+    departments = [computer, physics, economics, art]
+    
     context = {
-        # 'country_choices': country_choices
+        "departments": departments
     }
 
     if request.method == 'POST':
@@ -45,9 +54,14 @@ def studentSignUpView(request):
 
         email = request.POST['email']
         
-        tot_cred = request.POST['tot_cred']
-        dept_name = request.POST['dept_name']
-        
+        # if (!request.POST['tot_cred']):
+        #     tot_cred = request.POST['tot_cred']
+        # else:
+        #     tot_cred = 0
+            
+        dept_name_value = request.POST.get('dept_name', computer)
+        dept_name = Department.objects.get(dept_name=dept_name_value)
+        print("dept_name_value: ", dept_name_value, "\n", "dept_name: ", dept_name.__str__())
         
         password = request.POST['password']
         password2 = request.POST['password2']
@@ -74,12 +88,12 @@ def studentSignUpView(request):
                 
                 student = Student.objects.create(
                     user=user,
-                    tot_cred=tot_cred,
+                    # tot_cred=tot_cred,
                     dept_name=dept_name
                 )
                 student.save()
                 
-                return redirect('log_in')
+                return redirect('signup')
                 
         else:
             messages.error(request, 'Passwords doesnt match!')

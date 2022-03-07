@@ -33,8 +33,10 @@ class Department(models.Model):
     building = models.CharField(max_length=15)
     budget = models.FloatField(null=False,
                                blank=False, 
-                               validators=[MaxLengthValidator(14, message="No more than 12 digits!"), 
-                                           MinValueValidator(0.0, "Salary should be positive!")])
+                               validators=[MinValueValidator(0.0, "Salary should be positive!")])
+    
+    def __str__(self) -> str:
+        return str(self.dept_name)
     
 
 class Course(models.Model):
