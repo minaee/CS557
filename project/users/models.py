@@ -5,7 +5,7 @@ from django.core.mail import send_mail
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.utils.translation import gettext_lazy as _
-from django.core.validators import RegexValidator
+from django.core.validators import MinValueValidator, MaxLengthValidator
 
 from .managers import UserManager
 
@@ -60,3 +60,26 @@ class User(AbstractBaseUser, PermissionsMixin):
                 'Email: ' + str(self.email) )
         return info
 
+class Student(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    tot_cred = models.IntegerField(null=False, 
+                                   blank=False, 
+                                   validators=[MinValueValidator(0, message="Credits should be positive values.")])
+    
+    # dept_name = models.ForeignKey(
+    #     'university.Department',
+    #     on_delete=models.CASCADE
+    # )
+
+
+class Instructor(models.Model): 
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    salary = models.FloatField(null=False,
+                               blank=False, 
+                               validators=[MaxLengthValidator(8, message="No more than 8 digits!"), 
+                                           MinValueValidator(29000.0, "Salary should be more than $29000!")])
+    
+    # dept_name = models.ForeignKey(
+    #     'university.Department',
+    #     on_delete=models.CASCADE
+    # )
