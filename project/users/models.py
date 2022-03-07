@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+from operator import truediv
 
 from django.db import models
 from django.core.mail import send_mail
@@ -66,10 +67,12 @@ class Student(models.Model):
                                    blank=False, 
                                    validators=[MinValueValidator(0, message="Credits should be positive values.")])
     
-    # dept_name = models.ForeignKey(
-    #     'university.Department',
-    #     on_delete=models.CASCADE
-    # )
+    dept_name = models.ForeignKey(
+        'university.Department',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
 
 
 class Instructor(models.Model): 
@@ -79,7 +82,9 @@ class Instructor(models.Model):
                                validators=[MaxLengthValidator(8, message="No more than 8 digits!"), 
                                            MinValueValidator(29000.0, "Salary should be more than $29000!")])
     
-    # dept_name = models.ForeignKey(
-    #     'university.Department',
-    #     on_delete=models.CASCADE
-    # )
+    dept_name = models.ForeignKey(
+        'university.Department',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )

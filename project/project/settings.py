@@ -36,7 +36,7 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'pages.apps.PagesConfig',
-    # 'university.apps.UniversityConfig',
+    'university.apps.UniversityConfig',
     
         
     'django.contrib.admin',
