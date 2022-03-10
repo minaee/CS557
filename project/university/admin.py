@@ -7,7 +7,7 @@ from .models import *
 # usr = get_user_model()
 
 
-admin.site.register(Section)
+
 admin.site.register(Teaches)
 admin.site.register(Takes)
 admin.site.register(Advisor)
@@ -54,3 +54,14 @@ class Time_slot_Admin(admin.ModelAdmin):
 
     list_per_page = 10
 admin.site.register(Time_slot, Time_slot_Admin)
+
+
+class Section_Admin(admin.ModelAdmin):
+    list_display = ('id', 'course_id', 'sec_id', 'semester', 'year', 'building', 'room_number', 'time_slot_id' )
+    list_display_links = ('id', 'course_id', 'sec_id', 'semester', 'year', 'building', 'room_number', 'time_slot_id' )
+    list_filter = ('course_id', 'building', 'semester', 'year',  )
+
+    search_fields = ('building', 'room_number')
+
+    list_per_page = 10
+admin.site.register(Section, Section_Admin)

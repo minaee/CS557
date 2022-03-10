@@ -3,6 +3,7 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator, MaxLengthValidator
 
 from datetime import datetime
+from datetime import date
 from users.models import Student, Instructor
 
 class Classroom(models.Model):
@@ -91,8 +92,8 @@ class Section(models.Model):
         ("Summer", "Summer")
     )
     semester = models.CharField(max_length=6, choices=seasons)
-    year = models.DateField(validators=[MinValueValidator(datetime(1701, 1, 1, 0, 0, 0)),
-                                        MaxValueValidator(datetime(2100, 1, 1, 0, 0, 0))])
+    year = models.DateField(validators=[MinValueValidator(date(1701, 1, 1)),
+                                        MaxValueValidator(date(2100, 1, 1))])
     building = models.ForeignKey(Classroom,
                                  on_delete=models.CASCADE,
                                  related_name="SectionBuilding")
@@ -105,6 +106,9 @@ class Section(models.Model):
     
     # # composite primary key implementation in django
     # UniqueConstraint(fields=['course_id', 'sec_id', 'semester', 'year'], name="unique_section")
+    
+    def __str__(self) -> str:
+        return str(self.sec_id) 
 
 
 
