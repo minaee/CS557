@@ -6,7 +6,7 @@ from django.core.mail import send_mail
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.utils.translation import gettext_lazy as _
-from django.core.validators import MinValueValidator, MaxLengthValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 from .managers import UserManager
 
@@ -83,9 +83,8 @@ class Instructor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     salary = models.FloatField(null=True,
                                blank=True, 
-                               validators=[MaxLengthValidator(8, message="No more than 8 digits!"), 
+                               validators=[MaxValueValidator(99999999, "Salary should be less than 8 digits."), 
                                            MinValueValidator(29000.0, "Salary should be more than $29000!")])
-    
     dept_name = models.ForeignKey(
         'university.Department',
         on_delete=models.CASCADE,

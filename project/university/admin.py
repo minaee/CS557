@@ -6,8 +6,7 @@ from .models import *
 # Register your models here.
 # usr = get_user_model()
 
-admin.site.register(Department)
-admin.site.register(Course)
+
 admin.site.register(Section)
 admin.site.register(Teaches)
 admin.site.register(Takes)
@@ -25,3 +24,24 @@ class Classroom_Admin(admin.ModelAdmin):
     list_per_page = 10
 admin.site.register(Classroom, Classroom_Admin)
 
+
+class Course_Admin(admin.ModelAdmin):
+    list_display = ('course_id', 'title', 'dept_name')
+    list_display_links = ('course_id', 'title', 'dept_name')
+    list_filter = ('dept_name',)
+
+    search_fields = ('course_id', 'title')
+
+    list_per_page = 10
+admin.site.register(Course, Course_Admin)
+
+
+class Department_Admin(admin.ModelAdmin):
+    list_display = ( 'dept_name', 'building', 'budget')
+    list_display_links = ( 'dept_name', 'building', 'budget')
+    # list_filter = ('dept_name', 'building', 'budget')
+
+    # search_fields = ('course_id', 'title')
+
+    list_per_page = 10
+admin.site.register(Department, Department_Admin)

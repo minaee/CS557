@@ -40,8 +40,8 @@ def studentSignUpView(request):
     physics = 'physics'
     economics = 'economics'
     art = 'art'
-    departments = [computer, physics, economics, art]
-    
+    # departments = [computer, physics, economics, art]
+    departments = Department.objects.values_list('dept_name', flat=True)
     context = {
         "departments": departments
     }
@@ -61,7 +61,6 @@ def studentSignUpView(request):
             
         dept_name_value = request.POST.get('dept_name', computer)
         dept_name = Department.objects.get(dept_name=dept_name_value)
-        print("dept_name_value: ", dept_name_value, "\n", "dept_name: ", dept_name.__str__())
         
         password = request.POST['password']
         password2 = request.POST['password2']
@@ -106,9 +105,16 @@ def instructorSignUpView(request):
     """
         instructor signup view
     """
+    computer = 'computer'
+    physics = 'physics'
+    economics = 'economics'
+    art = 'art'
+    departments = [computer, physics, economics, art]
+    departments = Department.objects.values_list('dept_name', flat=True)
     context = {
-        # 'country_choices': country_choices
+        "departments": departments
     }
+    
 
     if request.method == 'POST':
         # Get form values
@@ -118,8 +124,10 @@ def instructorSignUpView(request):
 
         email = request.POST['email']
         
-        salary = request.POST['salary']
-        dept_name = request.POST['dept_name']
+        salary = int(request.POST.get('salary', 0))
+        dept_name_value = request.POST.get('dept_name', computer)
+        dept_name = Department.objects.get(dept_name=dept_name_value)
+        
         
         
         password = request.POST['password']
@@ -152,7 +160,7 @@ def instructorSignUpView(request):
                 )
                 instructor.save()
                 
-                return redirect('log_in')
+                return redirect('signup')
                 
         else:
             messages.error(request, 'Passwords doesnt match!')
@@ -310,55 +318,25 @@ def register(request):
 
    
 def mylogin(request):
-    logger = logging.getLogger(__name__)
+    # logger = logging.getLogger(__name__)
     if request.method == 'POST':
         
         username = request.POST['username']
         password = request.POST['password']
 
-        # remember_me = request.POST.get('remember_me')
-        # print('\n\n\nRemember me: %s\n\n\n'%remember_me)
-        
-        ''' Begin reCAPTCHA validation '''
-        recaptcha_response = request.POST.get('g-recaptcha-response')
-        url = 'https://www.google.com/recaptcha/api/siteverify'
-        values = {
-                'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY_LOGIN,
-                'response': recaptcha_response
-            }
-        data = urllib.parse.urlencode(values).encode()
-        req =  urllib.request.Request(url, data=data)
-        response = urllib.request.urlopen(req)
-        result = json.loads(response.read().decode())
-        ''' End reCAPTCHA validation '''
-
-        if result['success']:
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                
-                if True:  # not remember_me: # if remember me is not selected
-                    request.session.set_expiry(0)  
-                    request.session.modified = True
-
-                user.previous_visit = user.current_visit                
-                user.current_visit = datetime.now()
-                user.save(update_fields=['previous_visit', 'current_visit'])
-                
-                messages.success(request, 'You are now logged in')
-                # return redirect('dashboard')
-                return redirect('my_products')
-                # return render(request, 'users/my_products.html')
-            else:
-                logger.error('Something went wrong!')
-                messages.error(request, 'Invalid credentials.')
-                # return redirect('log_in')
-                return render(request, 'users/login.html')
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            
+            messages.success(request, 'You are now logged in')
+            # return redirect('dashboard')
+            return redirect('index')
+            # return render(request, 'users/my_products.html')
         else:
-            messages.error(request, 'Invalid reCAPTCHA. Please try again.')
+            # logger.error('Something went wrong!')
+            messages.error(request, 'Invalid credentials.')
             # return redirect('log_in')
             return render(request, 'users/login.html')
-        
     else:
         return render(request, 'users/login.html')
 

@@ -23,12 +23,12 @@ class Department(models.Model):
         (economics, "Economics"),
         (art, "Art")
     ]
-    
+
     dept_name = models.CharField(max_length=20, 
                                  null=False, 
                                  blank=False, 
-                                 choices=departments,
-                                 default=computer)
+                                #  choices=departments,
+                                 default="Comp. Sci.")
     
     building = models.CharField(max_length=15)
     budget = models.FloatField(null=False,
@@ -49,10 +49,10 @@ class Course(models.Model):
     )
     credits = models.IntegerField(null=False, 
                                    blank=False, 
-                                   validators=[MinValueValidator(0, message="Credits should be positive values."),
-                                               MinLengthValidator(0, message="Credits should be only 2 digits."),
-                                               MaxLengthValidator(0, message="Credits should be only 2 digits.")])
-  
+                                   validators=[MinValueValidator(0, message="Credits should be positive values.")])
+    def __str__(self) -> str:
+        return str(self.course_id) + " " + str(self.title)
+
 
 class Section(models.Model):
     course_id = models.ForeignKey(Course, 
