@@ -1,3 +1,4 @@
+from statistics import mode
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator, MaxLengthValidator
 
@@ -10,6 +11,9 @@ class Classroom(models.Model):
     capacity = models.IntegerField(null=True,
                                    blank=True,
                                    validators=[MaxLengthValidator(4, message="No more than 4 digits.")])
+    
+    def __str__(self) -> str:
+        return str(self.building) + " " + str(self.room_number)
     
 
 class Department(models.Model):
@@ -54,6 +58,28 @@ class Course(models.Model):
         return str(self.course_id) + " " + str(self.title)
 
 
+class Time_slot(models.Model):
+    # time_slot_id = models.CharField(max_length=4)
+    week_days = (
+        ("sa", "Saturday"),
+        ("su", "Sunday"),
+        ("mo", "Monday"),
+        ("tu", "Tuseday"),
+        ("we", "Wednesday"),
+        ("th", "Thursday"),
+        ("fr", "Friday")
+    )
+    day = models.CharField(max_length=9, null=False, blank=False, choices=week_days)
+    start_hr = models.TimeField(null=False, blank=False)
+    # start_min = 
+    end_hr = models.TimeField(null=False, blank=False)
+    # end_min = 
+    
+    def __str__(self) -> str:
+        return str(self.day) + ":" + str(self.start_hr) + "-" + str(self.end_hr)
+
+
+
 class Section(models.Model):
     course_id = models.ForeignKey(Course, 
                                   on_delete=models.CASCADE)
@@ -73,7 +99,9 @@ class Section(models.Model):
     room_number = models.ForeignKey(Classroom,
                                     on_delete=models.CASCADE,
                                     related_name="SectionRoomNumber")
-    time_slot_id = models.CharField(max_length=4)
+    time_slot_id = models.ForeignKey(Time_slot,
+                                     on_delete=models.DO_NOTHING)
+    # CharField(max_length=4)
     
     # # composite primary key implementation in django
     # UniqueConstraint(fields=['course_id', 'sec_id', 'semester', 'year'], name="unique_section")
@@ -130,22 +158,6 @@ class Advisor(models.Model):
                              on_delete=models.CASCADE)
 
 
-class Time_slot(models.Model):
-    time_slot_id = models.CharField(max_length=4)
-    week_days = (
-        ("sa", "Saturday"),
-        ("su", "Sunday"),
-        ("mo", "Monday"),
-        ("tu", "Tuseday"),
-        ("we", "Wednesday"),
-        ("th", "Thursday"),
-        ("fr", "Friday")
-    )
-    day = models.CharField(max_length=9, null=False, blank=False, choices=week_days)
-    start_hr = models.TimeField(null=False, blank=False)
-    # start_min = 
-    end_hr = models.TimeField(null=False, blank=False)
-    # end_min = 
 
 
 class Prereq(models.Model):

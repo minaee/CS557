@@ -22,6 +22,9 @@ urlpatterns = [
     path('login', views.mylogin, name='log_in'),
     path('register', views.register, name='register'),
     path('log_out', views.mylogout, name='log_out'),
+    
+    path('student/courses', views.student_view_department_courses, name='student_view_department_courses'),
+    path('instructor/courses', views.instructor_view_department_courses, name='instructor_view_department_courses'),
     # path('dashboard', views.dashboard, name='dashboard'),
     
     # path('user_inbox', views.user_inbox, name='user_inbox'),

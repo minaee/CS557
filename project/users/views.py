@@ -1,3 +1,4 @@
+import imp
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 # from django.contrib.auth.models import User
@@ -12,8 +13,10 @@ from django.contrib import messages
 import logging
 from django.utils.timezone import now
 import re
+from django.contrib.auth.decorators import login_required
 
-from university.models import Department
+
+from university.models import Department, Course
 
 
 from .models import User, Student, Instructor
@@ -350,3 +353,41 @@ def mylogout(request):
         # pass
         messages.error(request, 'Unknown error!!!')
         return redirect('index')
+
+@login_required
+def student_view_department_courses(request):
+    try:
+        this_user = Student.objects.get(user=request.user)
+        print("\n\n\n\nstudent found\n\n\n\n")
+    except:
+        print("\n\n\n\n\nno student found!\n\n\n\n")
+    
+    
+    
+    queryset = Course.objects.filter(dept_name=this_user.dept_name)
+    
+  
+
+    context = {
+        "courses": queryset,
+    }
+    return render(request, 'users/student_view_department_courses.html', context)
+
+@login_required
+def instructor_view_department_courses(request):
+    
+    try:
+        this_user = Instructor.objects.get(user=request.user)
+        # print("\n\n\n\nstudent found\n\n\n\n")
+    except:
+        print("\n\n\n\n\nno instructor found!\n\n\n\n")
+    
+    
+    
+    queryset = Course.objects.filter(dept_name=this_user.dept_name)
+    
+    
+    context = {
+        "courses": queryset,
+    }
+    return render(request, 'users/student_view_department_courses.html', context)
