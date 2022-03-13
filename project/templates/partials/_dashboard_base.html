@@ -12,37 +12,54 @@
         <ul id="fruits-nav" class="nav flex-column">
             
             {% if not user.is_superuser %}
+            <!-- Register - select course -->
             <li class="nav-item">
                 
                 <div class="d-flex">
                     
-
-
+                    <div class="d-flex justify-content-start">
+                        <a  href="{% url 'student_register_course' %}" 
+                            class="nav-link text-dark">
+                            Register  course
+                        </a>  
+                    </div>
+                    
                 </div>
             </li>
             {% endif %}
 
             {% if user.is_student %}
+            <!-- view all of courses from student's own department -->
             <li class="nav-item">
                 
                 <div class="d-flex">
                     
                     <div class="d-flex justify-content-start">
                         <a  href="{% url 'student_view_department_courses' %}" 
-                            {% if 'my_products' in request.path %}
-                                class="nav-link text-dark font-weight-bold"
-                            {% else %}
-                                class="nav-link text-dark"
-                            {% endif %}>
+                            class="nav-link text-dark" >
                             My department courses
                         </a>  
                     </div>
 
-                    
+                </div>
+            </li>
 
+            <!-- Register - select course -->
+            <li class="nav-item">
+                
+                <div class="d-flex">
+                    
+                    <div class="d-flex justify-content-start">
+                        <a  href="{% url 'student_register_course' %}" 
+                                class="nav-link text-dark" >
+                            Register  course
+                        </a>  
+                    </div>
+                    
                 </div>
             </li>
             {% endif %}
+            
             {% if user.is_instructor %}
             <li class="nav-item">
                 

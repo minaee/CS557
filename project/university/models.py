@@ -45,8 +45,8 @@ class Department(models.Model):
     
 
 class Course(models.Model):
-    course_id = models.CharField(max_length=8,
-                                 primary_key=True)
+    courseid = models.CharField(max_length=8,
+                                 primary_key=True, db_column="courseid")
     title = models.CharField(max_length=50)
     dept_name = models.ForeignKey(
         Department,
@@ -56,7 +56,7 @@ class Course(models.Model):
                                    blank=False, 
                                    validators=[MinValueValidator(0, message="Credits should be positive values.")])
     def __str__(self) -> str:
-        return str(self.course_id) + " " + str(self.title)
+        return str(self.courseid) + " " + str(self.title)
 
 
 class Time_slot(models.Model):
@@ -82,8 +82,10 @@ class Time_slot(models.Model):
 
 
 class Section(models.Model):
-    course_id = models.ForeignKey(Course, 
-                                  on_delete=models.CASCADE)
+    courseid = models.ForeignKey(Course, 
+                                  on_delete=models.CASCADE,
+                                  related_name="SectionCourseId")
+    
     sec_id = models.CharField(max_length=8)
     seasons = (
         ("Fall", "Fall"),
@@ -108,7 +110,7 @@ class Section(models.Model):
     # UniqueConstraint(fields=['course_id', 'sec_id', 'semester', 'year'], name="unique_section")
     
     def __str__(self) -> str:
-        return str(self.sec_id) 
+        return str(self.courseid) + " " + str(self.semester) + " " + str(self.year)
 
 
 
@@ -118,7 +120,7 @@ class Teaches(models.Model):
                            primary_key=True,
                            related_name="TeachesId",
                            unique=True)
-    course_id = models.ForeignKey(Section, 
+    courseid = models.ForeignKey(Section, 
                                   on_delete=models.CASCADE,
                                   related_name="TeachesCourseId")
     sec_id = models.ForeignKey(Section, 
@@ -131,7 +133,7 @@ class Teaches(models.Model):
                                   on_delete=models.CASCADE,
                                   related_name="TeachesYaer")
     # # composite primary key implementation in django
-    # UniqueConstraint(fields=['id', 'course_id', 'sec_id', 'semester', 'year'], name="unique_teaches")    
+    # UniqueConstraint(fields=['id', 'courseId', 'sec_id', 'semester', 'year'], name="unique_teaches")    
 
 
 class Takes(models.Model):
@@ -139,7 +141,7 @@ class Takes(models.Model):
                            on_delete=models.CASCADE,
                            primary_key=True,
                            unique=True)
-    course_id = models.ForeignKey(Section, 
+    courseid = models.ForeignKey(Section, 
                                   on_delete=models.CASCADE,
                                   related_name="TakesCourseId")
     sec_id = models.ForeignKey(Section, 
@@ -165,7 +167,7 @@ class Advisor(models.Model):
 
 
 class Prereq(models.Model):
-    course_id = models.ForeignKey(Course, 
+    courseid = models.ForeignKey(Course, 
                                   on_delete=models.CASCADE,
                                   related_name="Current")
     prereq_id = models.ForeignKey(Course, 

@@ -1,4 +1,3 @@
-import imp
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 # from django.contrib.auth.models import User
@@ -16,7 +15,7 @@ import re
 from django.contrib.auth.decorators import login_required
 
 
-from university.models import Department, Course
+from university.models import Department, Course, Section
 
 
 from .models import User, Student, Instructor
@@ -391,3 +390,30 @@ def instructor_view_department_courses(request):
         "courses": queryset,
     }
     return render(request, 'users/student_view_department_courses.html', context)
+
+
+@login_required
+def student_register_course(request):
+    
+    try:
+        this_user = Student.objects.get(user=request.user)
+        # print("\n\n\n\nstudent found\n\n\n{}\n".format(this_user.dept_name))
+    except:
+        print("\n\n\n\n\nno instructor found!\n\n\n\n")
+    
+    
+    student_courses = Course.objects.filter(dept_name=this_user.dept_name)
+    ids = []
+    for item in student_courses:
+        # print(item.courseid)
+        ids.append(item.courseid)
+    print(ids)
+    queryset = Section.objects.filter(courseid__in=ids)
+    
+    
+    context = {
+        "this_user_department": this_user.dept_name,
+        "sections": queryset,
+    }
+    
+    return render(request, 'users/student_register_course.html', context)
