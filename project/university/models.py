@@ -137,10 +137,13 @@ class Teaches(models.Model):
 
 
 class Takes(models.Model):
-    id = models.OneToOneField(Student,
-                           on_delete=models.CASCADE,
-                           primary_key=True,
-                           unique=True)
+    # id = models.OneToOneField(Student,
+    #                        on_delete=models.CASCADE,
+    #                        primary_key=True,
+    #                        unique=True)
+    student = models.ForeignKey(Student,
+                                   on_delete=models.CASCADE,
+                                   null=True, blank=True)
     courseid = models.ForeignKey(Section, 
                                   on_delete=models.CASCADE,
                                   related_name="TakesCourseId")

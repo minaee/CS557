@@ -46,20 +46,95 @@
     <!-- content -->
     <div class="col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9 my-3" >
 
-      <!-- Last login -->
+      <!-- student info and available courses  -->
       <div class="row">
         
-        {% if this_user_department %}
-            <h1>
-                this_user_department: {{this_user_department}}
-            </h1>
-                
+        <!-- Student information -->
+        <div class="row">
+          <div class="col text-capitalize">
+            student information
+          </div>
+        </div>
+        {% if this_user %}
+          <div class="table-responsive">
+            <table class="table table-hover">
+
+              <thead>
+                <tr class="text-capitalize">
+                  <th scope="col">name</th>
+                  <th scope="col">department name</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td>{{ this_user.user.get_full_name}}</td>
+                  <td>{{ this_user.dept_name }}</td>
+                </tr>
+              </tbody>
+
+            </table>
+          </div>
+        {% endif %}
+        
+        <!-- Showing registered courses for this user -->
+        <div class="row">
+          <div class="col text-capitalize">
+            registered courses
+          </div>
+        </div>
+        {% if takes_queryset %}
+          <div class="row">
+            <div class="col">
+
+              <table class="table table-hover">
+                <thead>
+                  <tr class="text-capitalize">
+                    <th scope="col">#</th>
+                    <th scope="col">course id</th>
+                    <th scope="col">title</th>
+                    <th scope="col">department name</th>
+                    <th scope="col">semester</th>
+                    <th scope="col">year</th>
+                    <th scope="col">building</th>
+                    <th scope="col">room_number</th>
+                    <th scope="col">time_slot_id</th>
+                  </tr>
+                </thead>
+                <tbody>
+  
+                  {% for item in takes_queryset %}
+                    <tr>
+                      <th scope="row">{{forloop.counter}}</th>
+                      <td>{{ item.courseid.courseid }}</td>
+                      <td>{{ item.courseid.courseid.title }}</td>
+                      <td>{{ item.courseid.courseid.dept_name }}</td>
+                      <td>{{ item.semester }}</td>
+                      <td>{{ item.year }}</td>
+                      <td>{{ item.semester.building }}</td>
+                      <td>{{ item.semester.room_number }}</td>
+                      <td>{{ item.semester.time_slot_id.day }} - {{ item.semester.time_slot_id.start_hr }}:{{ item.semester.time_slot_id.end_hr }}</td>
+                      
+                    </tr>
+                  {% endfor %}
+                  
+                  
+                </tbody>
+              </table>
+
+              
+            </div>
+          </div>
         {% endif %}
 
-        
 
+        <!-- list of availaable curses -->
+        <div class="row">
+          <div class="col text-capitalize">
+            available courses
+          </div>
+        </div>
         {% if sections %}
-          
           <div class="table-responsive">
             <table class="table table-hover">
               <thead>
@@ -78,6 +153,7 @@
               <tbody>
 
                 {% for item in sections %}
+                {{item}}
                   <tr>
                     <th scope="row">{{forloop.counter}}</th>
                     <td>{{ item.courseid.courseid }}</td>
@@ -96,10 +172,82 @@
               </tbody>
             </table>
           </div>
-            
         {% endif %}
 
+      </div>
 
+
+      <!-- registering in sections -->
+      <div class="row">
+        <div class="col text-capitalize">
+          select sections to register
+        </div>
+        <div class="col">
+
+          <!-- <form   name="student_register_course" 
+                  id="student_register_course" 
+                  action="{% url 'student_register_course' %}" 
+                  method="POST" 
+                  enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="form-row" >
+
+            </div>
+
+
+          </form> -->
+          <form method="post">
+            {% csrf_token %}
+            <!-- <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="Mango" id="mango" name="fruits">
+              <label class="form-check-label" for="mango">Mango</label>
+            </div> -->
+
+            <table class="table table-hover">
+              <thead>
+                <tr class="text-capitalize">
+                  <th scope="col">#</th>
+                  <th scope="col">course id</th>
+                  <th scope="col">title</th>
+                  <th scope="col">department name</th>
+                  <th scope="col">semester</th>
+                  <th scope="col">year</th>
+                  <th scope="col">building</th>
+                  <th scope="col">room_number</th>
+                  <th scope="col">time_slot_id</th>
+                  <th scope="col">select</th>
+                </tr>
+              </thead>
+              <tbody>
+
+                {% for item in sections %}
+                  <div class="form-check">
+                    <tr>
+                      <th scope="row">{{forloop.counter}}</th>
+                      <td>{{ item.courseid.courseid }}</td>
+                      <td>{{ item.courseid.title }}</td>
+                      <td>{{ item.courseid.dept_name }}</td>
+                      <td>{{ item.semester }}</td>
+                      <td>{{ item.year }}</td>
+                      <td>{{ item.building.building }}</td>
+                      <td>{{ item.building.room_number }}</td>
+                      <td>{{ item.time_slot_id.day }} - {{ item.time_slot_id.start_hr }}:{{ item.time_slot_id.end_hr }}</td>
+                      <td><input class="form-check-input" type="checkbox" value="{{item.id}}" id="sectionid" name="sectionid"></td>
+                    </tr>
+                    
+                  </div>
+                {% endfor %}
+                
+                
+              </tbody>
+            </table>
+
+
+            <button type="submit">Submit</button>
+          </form>
+
+        </div>
 
       </div>
 

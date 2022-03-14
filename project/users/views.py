@@ -15,7 +15,7 @@ import re
 from django.contrib.auth.decorators import login_required
 
 
-from university.models import Department, Course, Section
+from university.models import Department, Course, Section, Takes
 
 
 from .models import User, Student, Instructor
@@ -406,15 +406,172 @@ def student_register_course(request):
     student_courses = Course.objects.filter(dept_name=this_user.dept_name)
     ids = []
     for item in student_courses:
-        # print(item.courseid)
+        # print(item)
         ids.append(item.courseid)
     # print(ids)
-    queryset = Section.objects.filter(courseid__in=ids)
-    
-    
+    queryset_section = Section.objects.filter(courseid__in=ids)
+    print("queryset_section: ", queryset_section)
+        
+    takes_queryset = Takes.objects.filter(student=this_user)
+
+    # shit = []
+    # for item in queryset_section:
+    #     if item.courseid not in takes_queryset.courseid:
+    #         shit.append(item)
+            
     context = {
-        "this_user_department": this_user.dept_name,
-        "sections": queryset,
+        "this_user": this_user,
+        "sections": queryset_section,
+        "takes_queryset": takes_queryset,
     }
     
+    
+    if request.method == 'POST':
+        # fruits = request.POST.getlist('fruits')
+        secs = request.POST.getlist('sectionid')
+        secs_query = Section.objects.filter(id__in=secs)
+        print("secs_query: ", secs_query)
+        
+        for item in secs_query:
+            take = Takes(student=this_user,
+                         courseid=item,
+                         sec_id=item,
+                         semester=item,
+                         year=item)
+            take.save()
+            
+        
+        return redirect('student_register_course')
+        
     return render(request, 'users/student_register_course.html', context)
+
+
+
+
+
+
+# @login_required
+# def submit_quote(request):
+
+#     wishlistitem = WishListItem.objects.filter(Q(owner=request.user), Q(submitted=False), ~Q(category_name__icontains='Support') ).order_by('tag')
+    
+    
+#     if request.method=='POST':
+#         owner = request.user
+        
+#         subject = request.POST.get('subject') 
+#         message = request.POST['message']
+        
+#         if 'attached_file' in request.FILES:
+#             attached_file = request.FILES['attached_file']
+#         else:
+#             attached_file = ""
+        
+#         wish_item = []
+#         unique_id = request.POST.getlist('unique_id')
+#         print('unique id: ', unique_id)
+#         for item in request.POST.getlist('unique_id'):
+#             item_id = int(request.POST.get('item_id_%s'%item))  
+#             item_title = request.POST.get('item_title_%s'%item)
+#             item_tag = request.POST.get('item_tag_%s'%item)
+            
+#             when_is_required_date = request.POST.get('when_is_required_date_%s'%item)
+#             print('\n\nwhen_is_required_date: ', when_is_required_date)
+#             entered_date = datetime.strptime(str(when_is_required_date) ,"%Y-%m-%d")
+#             entered_date = date(entered_date.year, entered_date.month, entered_date.day)
+#             print('entered entered_date: ', entered_date )
+            
+#             if not (entered_date > date.today()):
+                
+#                 messages.error(request, "The entered date should be greater than today's date.")
+#                 return redirect('submit_quote')
+#             else:
+#                 temp_wish_item = WishListItem.objects.get(id=item_id, title=item_title, tag=item_tag)
+#                 temp_wish_item.when_is_required_date = entered_date
+#                 temp_wish_item.save(update_fields=['when_is_required_date',])
+                
+#                 wish_item.append(temp_wish_item )
+#                 print('wish_item: ', wish_item)
+                
+#         quote = QuoteList(owner=owner)
+#         quote.save()
+#         for temp_item in wish_item:
+#             temp_item.quoteList = quote
+#             temp_item.save()
+            
+#         for temp_item in wish_item:
+#             temp_item.submitted = True
+#             temp_item.save(update_fields=['submitted', ])
+        
+#         # quote.owner=owner
+#         quote.subject=subject
+#         quote.message=message
+#         quote.attached_file=attached_file
+#         quote.creation_date=datetime.now()
+#         quote.user_id=owner.id
+#         quote.status = QuoteList.Choices_status.submitted
+#         quote.converstation_id = quote.id
+#         quote.in_converstation = False
+#         quote.is_opened_user = True
+#         quote.is_opened_admin = False
+#         quote.save(update_fields=['subject', 'message', 'attached_file', 'creation_date', 
+#                                     'user_id', 'converstation_id', 'in_converstation',
+#                                     'is_opened_user', 'is_opened_admin' ])
+        
+#         messages.success(request,  "Your request has been submitted, \
+#                                     we will get back to you soon.")
+        
+#         admin_list = User.objects.filter(is_superuser__icontains=True)
+#         admin_emails = []
+#         for u in admin_list:
+#             admin_emails.append(u.email)
+#         wishlistitem = WishListItem.objects.filter(owner=quote.owner, quoteList=quote, )
+#         # print('\nName: ', quote.owner.get_full_name())
+#         # print('item in wish list:\n')
+#         customer_name = quote.owner.get_full_name()
+#         if quote.owner.title:
+#             customer_name = quote.owner.title + ' ' + customer_name
+#         email_message = ''
+#         for item in wishlistitem:
+#             # print('> ', item)
+#             email_message = email_message + str(item.count) + ' x ' + item.title + ' from ' + item.class_name + ' in ' + item.category_name + '<br>'
+#         # print('email_message: ', email_message)
+
+#         # send_mail(
+#         #         'New Quote from ' + customer_name,
+#         #         (customer_name + ' has submitted a quote request containing following items:\n'
+#         #         + email_message +
+#         #         '\n\nSign into the dashboard for more info.\n'),
+#         #         'hw.fbuser@gmail.com', # system@alternativeng.com
+#         #         admin_emails,
+#         #         fail_silently=False)
+        
+#         email_body = cleanhtml(message)
+#         subject_email = 'New Quote from ' + customer_name
+#         from_email = 'system@alternativeng.com'
+#         to = admin_emails
+#         text_content = ('\n"\n' + email_body + '"\n')
+#         html_content = ('<p>' + customer_name + ' has submitted a quote request containing following items:</p>'
+#                         '<p>' + email_message + '</p>'
+#                         '<p>Sign into the <a href="https://alternativeng.com/users/login">dashboard</a> for more info.</p>')
+                        
+#         msg = EmailMultiAlternatives(subject_email, text_content, from_email, to)
+#         msg.attach_alternative(html_content, "text/html")
+#         msg.send()
+
+            
+        
+#         return redirect('my_products')
+                
+#     context = {
+#         'products_choices': products_choices,
+#         'services_choices': services_choices,
+#         'support_choices': support_choices,
+#         'company_choices': company_choices,
+#         'country_choices': country_choices,
+#         'general': general,
+#         'wishlistitem': wishlistitem,
+#         'today':  date.today(),
+#     }
+
+#     return render(request, 'users/basket/submit_quote.html', context)

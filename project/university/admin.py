@@ -61,7 +61,7 @@ class Section_Admin(admin.ModelAdmin):
     list_display_links = ('id', 'courseid', 'sec_id', 'semester', 'year', 'building', 'room_number', 'time_slot_id' )
     list_filter = ('courseid', 'building', 'semester', 'year',  )
 
-    search_fields = ('building', 'room_number')
+    search_fields = ('courseid', 'building', 'room_number')
 
     list_per_page = 10
 admin.site.register(Section, Section_Admin)
