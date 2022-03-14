@@ -399,7 +399,8 @@ def student_register_course(request):
         this_user = Student.objects.get(user=request.user)
         # print("\n\n\n\nstudent found\n\n\n{}\n".format(this_user.dept_name))
     except:
-        print("\n\n\n\n\nno instructor found!\n\n\n\n")
+        pass
+        # print("\n\n\n\n\nno instructor found!\n\n\n\n")
     
     
     student_courses = Course.objects.filter(dept_name=this_user.dept_name)
@@ -407,7 +408,7 @@ def student_register_course(request):
     for item in student_courses:
         # print(item.courseid)
         ids.append(item.courseid)
-    print(ids)
+    # print(ids)
     queryset = Section.objects.filter(courseid__in=ids)
     
     
