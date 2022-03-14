@@ -15,7 +15,7 @@ import re
 from django.contrib.auth.decorators import login_required
 
 
-from university.models import Department, Course, Section, Takes
+from university.models import Department, Course, Section, Takes, Teaches
 
 
 from .models import User, Student, Instructor
@@ -447,7 +447,58 @@ def student_register_course(request):
 
 
 
+@login_required
+def instructor_register_course(request):
+    
+    try:
+        this_user = Instructor.objects.get(user=request.user)
+        # print("\n\n\n\ninstructor found\n\n\n{}\n".format(this_user.dept_name))
+    except:
+        pass
+        # print("\n\n\n\n\nno instructor found!\n\n\n\n")
+    
+    
+    instructor_courses = Course.objects.filter(dept_name=this_user.dept_name)
+    ids = []
+    for item in instructor_courses:
+        # print(item)
+        ids.append(item.courseid)
+    # print(ids)
+    queryset_section = Section.objects.filter(courseid__in=ids)
+    # print("queryset_section: ", queryset_section)
+        
+    teaches_queryset = Teaches.objects.filter(instructor=this_user)
 
+    # shit = []
+    # for item in queryset_section:
+    #     if item.courseid not in takes_queryset.courseid:
+    #         shit.append(item)
+            
+    context = {
+        "this_user": this_user,
+        "sections": queryset_section,
+        "teaches_queryset": teaches_queryset,
+    }
+    
+    
+    if request.method == 'POST':
+        # fruits = request.POST.getlist('fruits')
+        secs = request.POST.getlist('sectionid')
+        secs_query = Section.objects.filter(id__in=secs)
+        print("secs_query: ", secs_query)
+        
+        for item in secs_query:
+            teach = Teaches(instructor=this_user,
+                         courseid=item,
+                         sec_id=item,
+                         semester=item,
+                         year=item)
+            teach.save()
+            
+        
+        return redirect('instructor_register_course')
+    
+    return render(request, 'users/instructor_register_course.html', context)
 
 
 # @login_required

@@ -115,11 +115,14 @@ class Section(models.Model):
 
 
 class Teaches(models.Model):
-    id = models.OneToOneField(Instructor,
-                           on_delete=models.CASCADE,
-                           primary_key=True,
-                           related_name="TeachesId",
-                           unique=True)
+    # id = models.OneToOneField(Instructor,
+    #                        on_delete=models.CASCADE,
+    #                        primary_key=True,
+    #                        related_name="TeachesId",
+    #                        unique=True)
+    instructor = models.ForeignKey(Instructor,
+                                   on_delete=models.CASCADE,
+                                   null=True, blank=True)
     courseid = models.ForeignKey(Section, 
                                   on_delete=models.CASCADE,
                                   related_name="TeachesCourseId")
