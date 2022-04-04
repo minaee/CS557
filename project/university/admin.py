@@ -65,3 +65,13 @@ class Section_Admin(admin.ModelAdmin):
 
     list_per_page = 10
 admin.site.register(Section, Section_Admin)
+
+class Marks_Admin(admin.ModelAdmin):
+    list_display = ('id', 'mark', 'sec_id', 'instructor', 'student', 'take' )
+    list_display_links = ('id', 'mark', 'sec_id', 'instructor', 'student', 'take' )
+    list_filter = ( 'instructor', 'student' )
+
+    # search_fields = ('courseid', 'building', 'room_number')
+
+    list_per_page = 10
+admin.site.register(Marks, Marks_Admin)

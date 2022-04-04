@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} | enter mark {% endblock %}
+
+{% block content %}
+
+<div class="container mb-5">
+  
+<!-- Breadcrumb -->
+<div class="container pt-3">
+  <nav aria-label="breadcrumb">
+              <ol class="breadcrumb" style="background-color: #FFF;">
+
+              <li class="breadcrumb-item">
+                  <a href="{% url 'index' %}" class="text-dark">
+                  <i class="fas fa-home"></i> Home</a>
+              </li>
+
+              {% if user.is_authenticated %}
+              <li class="breadcrumb-item text-capitalize">
+                  <a class="text-dark" href="{% url 'instructor_enter_marks' %}"> Enter Marks</a>
+              </li>
+
+              <li class="breadcrumb-item text-capitalize"> {{ take_query_set.student }} </li>  
+              <li class="breadcrumb-item text-capitalize"> enter mark </li>  
+              {% endif %}
+              </ol>
+              
+  </nav>
+</div>
+<!-- Breadcrumb -->
+
+<!-- Alerts -->
+<!-- {% include 'partials/_alerts.html' %} -->
+
+<!-- dashboard content -->
+<div class="container z-depth-1 pb-3">
+  <div class="row">
+
+    <!-- sidebar -->
+    <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 offset-xl-0 my-3 py-1">
+        
+      {% include 'partials/_dashboard_base.html' %}
+
+    </div>
+
+    
+
+    <!-- content -->
+    <div class="col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9 my-3" >
+
+      
+
+
+      <!-- registering in sections -->
+      <div class="row">
+        <div class="col-12 text-capitalize">
+          enter mark for this student
+        </div>
+        <div class="col-12">
+
+
+          
+          <form method="post">
+            {% csrf_token %}
+            
+            <table class="table table-hover">
+
+                <thead>
+                    <tr class="text-capitalize">
+                      <th scope="col">student</th>
+                      <th scope="col">course title</th>
+                      <th scope="col">Section Id</th>
+                      <th scope="col">semester</th>
+                      <th scope="col">year</th>
+                      <th scope="col">mark</th>
+                      
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    {% if take_query_set %}
+                    <div class="form-check">
+                        <tr>
+                        <td class="text-left  clickable-row" >{{ take_query_set.student }}</td>
+                        <td class="text-left  clickable-row" >{{ take_query_set.courseid.courseid.title }}</td>
+                        <td class="text-left  clickable-row" >{{ take_query_set.courseid }}</td>
+                        <td class="text-left  clickable-row" >{{ take_query_set.semester.semester }}</td>
+                        <td class="text-left  clickable-row" >{{ take_query_set.year.year }}</td>
+                        <td>
+                            <input  type="text"  id="mark" name="mark" {% if mark_query_set %} value="{{mark_query_set.mark}}" {%endif%}>
+                        </td>
+                        </tr>
+                        
+                    </div>
+                    {% endif %}
+                </tbody>
+
+            </table>
+
+
+            <button type="submit">Submit</button>
+          </form>
+
+        </div>
+
+      </div>
+
+    </div>
+      
+</div>
+</div>
+
+{% endblock %}

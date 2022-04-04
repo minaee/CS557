@@ -136,7 +136,9 @@ class Teaches(models.Model):
                                   on_delete=models.CASCADE,
                                   related_name="TeachesYaer")
     # # composite primary key implementation in django
-    # UniqueConstraint(fields=['id', 'courseId', 'sec_id', 'semester', 'year'], name="unique_teaches")    
+    # UniqueConstraint(fields=['id', 'courseId', 'sec_id', 'semester', 'year'], name="unique_teaches")
+    def __str__(self) -> str:
+        return str(self.instructor) + " " + str(self.courseid.courseid.title)
 
 
 class Takes(models.Model):
@@ -179,3 +181,24 @@ class Prereq(models.Model):
     prereq_id = models.ForeignKey(Course, 
                                   on_delete=models.CASCADE,
                                   related_name="Prereq")
+    
+
+class Marks(models.Model):
+    sec_id = models.ForeignKey(Section, 
+                                  on_delete=models.CASCADE,
+                                  related_name="MarksSectionId")
+    instructor = models.ForeignKey(Instructor,
+                                   on_delete=models.CASCADE,
+                                   null=True, blank=True,
+                                   related_name="MarksInstructorId")
+    student = models.ForeignKey(Student,
+                                   on_delete=models.CASCADE,
+                                   null=True, blank=True,
+                                   related_name="MarksStudentId")
+    take = models.ForeignKey(Takes,
+                                   on_delete=models.CASCADE,
+                                   null=True, blank=True,
+                                   related_name="MarksTakeId")
+    mark = models.IntegerField(blank=True, null=True)
+    
+    

@@ -28,7 +28,14 @@ urlpatterns = [
     
     path('student/courses/register', views.student_register_course, name='student_register_course'),
     path('instructor/courses/register', views.instructor_register_course, name='instructor_register_course'),
-    # path('dashboard', views.dashboard, name='dashboard'),
+    
+    
+    path('instructor/section/marks', views.instructor_enter_marks, name='instructor_enter_marks'),
+    path('instructor/section/marks/teach/<teach_id>', views.instructor_enter_marks_teach, name='instructor_enter_marks_teach'),
+    path('instructor/section/mark/take/<take_id>', views.instructor_enter_mark_take, name='instructor_enter_mark_take'),
+    
+    
+    # path('dashboard', views.dashboard, name='dashboard'),(?P<teach_id>([A-Z]*)([0-9]*))/$
     
     # path('user_inbox', views.user_inbox, name='user_inbox'),
     # path('admin_inbox', views.admin_inbox, name='admin_inbox'),

@@ -93,6 +93,22 @@
                     </div>
                 </div>
             </li>
+            <li class="nav-item">
+                
+                <div class="d-flex">
+
+                    <div class="d-flex justify-content-start">
+                        <a  href="{% url 'instructor_enter_marks' %}" 
+                            {% if 'my_products' in request.path %}
+                                class="nav-link text-dark font-weight-bold"
+                            {% else %}
+                                class="nav-link text-dark"
+                            {% endif %}>
+                            Enter marks
+                        </a>  
+                    </div>
+                </div>
+            </li>
             {% endif %}
 
 
