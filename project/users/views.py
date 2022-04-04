@@ -410,19 +410,12 @@ def student_register_course(request):
         ids.append(item.courseid)
     # print(ids)
     queryset_section = Section.objects.filter(courseid__in=ids)
-    print("queryset_section: ", queryset_section)
-        
-    takes_queryset = Takes.objects.filter(student=this_user)
-
-    # shit = []
-    # for item in queryset_section:
-    #     if item.courseid not in takes_queryset.courseid:
-    #         shit.append(item)
+    # print("queryset_section: ", queryset_section)
+       
             
     context = {
         "this_user": this_user,
         "sections": queryset_section,
-        "takes_queryset": takes_queryset,
     }
     
     
@@ -583,3 +576,40 @@ def instructor_enter_mark_take(request, take_id):
         return redirect('instructor_enter_marks', )
     
     return render(request, 'users/instructor_enter_mark_take.html', context)
+
+
+@login_required
+def student_view_registered_section(request):
+    try:
+        this_user = Student.objects.get(user=request.user)
+        # print("\n\n\n\nstudent found\n\n\n{}\n".format(this_user.dept_name))
+    except:
+        pass
+        # print("\n\n\n\n\nno instructor found!\n\n\n\n")
+    
+    takes_query_set = Takes.objects.filter(student=this_user)
+    
+    context = {
+        'takes_query_set': takes_query_set,
+        'this_user': this_user,
+        
+    }
+    
+    return render(request, 'users/student_view_registered_section.html', context)
+
+@login_required
+def student_view_grades(request):
+    
+    try:
+        this_user = Student.objects.get(user=request.user)
+    except:
+        pass
+    
+    marks_query_set = Marks.objects.filter(student=this_user)
+    print(marks_query_set[0])
+    
+    context = {
+        'marks_query_set': marks_query_set,
+    }
+    
+    return render(request, 'users/student_view_grades.html', context)

@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} | Grades {% endblock %}
+
+{% block content %}
+
+<div class="container mb-5">
+  
+<!-- Breadcrumb -->
+<div class="container pt-3">
+  <nav aria-label="breadcrumb">
+              <ol class="breadcrumb" style="background-color: #FFF;">
+
+              <li class="breadcrumb-item">
+                  <a href="{% url 'index' %}" class="text-dark">
+                  <i class="fas fa-home"></i> Home</a>
+              </li>
+
+              {% if user.is_authenticated %}
+                <li class="breadcrumb-item text-capitalize"> Grades </li>
+              {% endif %}
+              </ol>
+              
+  </nav>
+</div>
+<!-- Breadcrumb -->
+
+<!-- Alerts -->
+<!-- {% include 'partials/_alerts.html' %} -->
+
+<!-- dashboard content -->
+<div class="container z-depth-1 pb-3">
+  <div class="row">
+
+    <!-- sidebar -->
+    <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 offset-xl-0 my-3 py-1">
+        
+      {% include 'partials/_dashboard_base.html' %}
+
+    </div>
+
+    
+
+    <!-- content -->
+    <div class="col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9 my-3" >
+
+      <!-- student info and available courses  -->
+      <div class="row">
+        
+        <!-- Showing registered courses for this user -->
+        <div class="row">
+          <div class="col text-capitalize">
+            <h2>Grades</h2>
+          </div>
+        </div>
+        {% if marks_query_set %}
+          <div class="row">
+            <div class="col">
+
+              <table class="table table-hover">
+                <thead>
+                  <tr class="text-capitalize">
+                    <th scope="col">#</th>
+                    <th scope="col">course id</th>
+                    <th scope="col">title</th>
+                    <th scope="col">department name</th>
+                    <th scope="col">semester</th>
+                    <th scope="col">year</th>
+                    <th scope="col">instructor</th>
+                    <th scope="col">mark</th>
+                  </tr>
+                </thead>
+                <tbody>
+  
+                  {% for item in marks_query_set %}
+                    <tr>
+                      <th scope="row">{{forloop.counter}}</th>
+                      <td>{{ item.sec_id.courseid.courseid }}</td>
+                      <td>{{ item.sec_id.courseid.title }}</td>
+                      <td>{{ item.sec_id.courseid.dept_name }}</td>
+                      <td>{{ item.sec_id.semester }}</td>
+                      <td>{{ item.sec_id.year }}</td>
+                      <td>{{ item.instructor }}</td>
+                      <td>{{ item.mark }}</td>                      
+                    </tr>
+                  {% endfor %}
+                  
+                  
+                </tbody>
+              </table>
+
+              
+            </div>
+          </div>
+        {% endif %}
+
+
+      </div>
+
+    </div>
+      
+</div>
+</div>
+
+{% endblock %}

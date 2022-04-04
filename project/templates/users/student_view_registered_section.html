@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} | Registered Courses {% endblock %}
+
+{% block content %}
+
+<div class="container mb-5">
+  
+<!-- Breadcrumb -->
+<div class="container pt-3">
+  <nav aria-label="breadcrumb">
+              <ol class="breadcrumb" style="background-color: #FFF;">
+
+              <li class="breadcrumb-item">
+                  <a href="{% url 'index' %}" class="text-dark">
+                  <i class="fas fa-home"></i> Home</a>
+              </li>
+
+              {% if user.is_authenticated %}
+                <li class="breadcrumb-item text-capitalize"> Registered Courses </li>
+              {% endif %}
+              </ol>
+              
+  </nav>
+</div>
+<!-- Breadcrumb -->
+
+<!-- Alerts -->
+<!-- {% include 'partials/_alerts.html' %} -->
+
+<!-- dashboard content -->
+<div class="container z-depth-1 pb-3">
+  <div class="row">
+
+    <!-- sidebar -->
+    <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 offset-xl-0 my-3 py-1">
+        
+      {% include 'partials/_dashboard_base.html' %}
+
+    </div>
+
+    
+
+    <!-- content -->
+    <div class="col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9 my-3" >
+
+      <!-- student info and available courses  -->
+      <div class="row">
+        
+        <!-- Showing registered courses for this user -->
+        <div class="row">
+          <div class="col text-capitalize">
+            <h2>registered courses</h2>
+          </div>
+        </div>
+        {% if takes_query_set %}
+          <div class="row">
+            <div class="col">
+
+              <table class="table table-hover">
+                <thead>
+                  <tr class="text-capitalize">
+                    <th scope="col">#</th>
+                    <th scope="col">course id</th>
+                    <th scope="col">title</th>
+                    <th scope="col">department name</th>
+                    <th scope="col">semester</th>
+                    <th scope="col">year</th>
+                    <th scope="col">building</th>
+                    <th scope="col">room_number</th>
+                    <th scope="col">time_slot_id</th>
+                  </tr>
+                </thead>
+                <tbody>
+  
+                  {% for item in takes_query_set %}
+                    <tr>
+                      <th scope="row">{{forloop.counter}}</th>
+                      <td>{{ item.courseid.courseid }}</td>
+                      <td>{{ item.courseid.courseid.title }}</td>
+                      <td>{{ item.courseid.courseid.dept_name }}</td>
+                      <td>{{ item.semester }}</td>
+                      <td>{{ item.year }}</td>
+                      <td>{{ item.semester.building }}</td>
+                      <td>{{ item.semester.room_number }}</td>
+                      <td>{{ item.semester.time_slot_id.day }} - {{ item.semester.time_slot_id.start_hr }}:{{ item.semester.time_slot_id.end_hr }}</td>
+                      
+                    </tr>
+                  {% endfor %}
+                  
+                  
+                </tbody>
+              </table>
+
+              
+            </div>
+          </div>
+        {% endif %}
+
+
+      </div>
+
+    </div>
+      
+</div>
+</div>
+
+{% endblock %}
