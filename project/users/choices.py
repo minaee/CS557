@@ -2,7 +2,6 @@ from iso3166 import countries
 import iso3166
 # import datetime
 from datetime import date
-from datetime import datetime as mytime
 import random
 
 
@@ -256,36 +255,3 @@ country_choices = {
 	'ZM': 'ZAMBIA',
 	'ZW': 'ZIMBABWE',
 }
-
-# for c in countries:
-#        print(c)
-
-# format: [country code][registration month][registration year][random number]
-#			3 digits		2digits				4digits				3digits
-def generate_code(selected_country):
-
-	for key, value in country_choices.items():
-		if key == selected_country:
-			country = countries.get(key)
-
-			# print('name:', country.name)
-			# print('numeric:', country.numeric)
-
-			id = ''
-			rand = random.randrange(100, 999, 1)
-			# id = str(country.numeric)
-			# print('country.numeric: ', country.numeric)
-			id = id + str(country.alpha2)
-			# print('country.alpha2: ', country.alpha2)
-			id = id + str(date.today().month)
-			# print('date.today().month: ', date.today().month)
-			id = id + str(date.today().year)
-			# print('date.today().year: ', date.today().year)
-			id = id + str(rand)
-			# print('rand:', rand)
-
-			# print('id:', id)
-
-			return id
-
-# generate_code('IR')

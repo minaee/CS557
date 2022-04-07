@@ -13,8 +13,6 @@ urlpatterns = [
     path('signup/student/', views.studentSignUpView, name='student_signup'),
     path('signup/instructor/', views.instructorSignUpView, name='instructor_signup'),
 
-
-
     path('login', views.mylogin, name='log_in'),
     path('register', views.register, name='register'),
     path('log_out', views.mylogout, name='log_out'),
@@ -32,8 +30,5 @@ urlpatterns = [
     
     path('student/sections', views.student_view_registered_section, name='student_view_registered_section'),
     path('student/grades', views.student_view_grades, name='student_view_grades'),
-    
-    
-    
     
 ]
