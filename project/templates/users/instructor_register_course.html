@@ -128,52 +128,6 @@
         {% endif %}
 
 
-        <!-- list of availaable curses -->
-        <div class="row">
-          <div class="col text-capitalize">
-            available courses
-          </div>
-        </div>
-        {% if sections %}
-          <div class="table-responsive">
-            <table class="table table-hover">
-              <thead>
-                <tr class="text-capitalize">
-                  <th scope="col">#</th>
-                  <th scope="col">course id</th>
-                  <th scope="col">title</th>
-                  <th scope="col">department name</th>
-                  <th scope="col">semester</th>
-                  <th scope="col">year</th>
-                  <th scope="col">building</th>
-                  <th scope="col">room_number</th>
-                  <th scope="col">time_slot_id</th>
-                </tr>
-              </thead>
-              <tbody>
-
-                {% for item in sections %}
-                
-                  <tr>
-                    <th scope="row">{{forloop.counter}}</th>
-                    <td>{{ item.courseid.courseid }}</td>
-                    <td>{{ item.courseid.title }}</td>
-                    <td>{{ item.courseid.dept_name }}</td>
-                    <td>{{ item.semester }}</td>
-                    <td>{{ item.year }}</td>
-                    <td>{{ item.building.building }}</td>
-                    <td>{{ item.building.room_number }}</td>
-                    <td>{{ item.time_slot_id.day }} - {{ item.time_slot_id.start_hr }}:{{ item.time_slot_id.end_hr }}</td>
-                    
-                  </tr>
-                {% endfor %}
-                
-                
-              </tbody>
-            </table>
-          </div>
-        {% endif %}
-
       </div>
 
 
@@ -181,29 +135,10 @@
       <div class="row">
         <div class="col text-capitalize">
           select sections to teach
-        </div>
-        <div class="col">
-
-          <!-- <form   name="student_register_course" 
-                  id="student_register_course" 
-                  action="{% url 'student_register_course' %}" 
-                  method="POST" 
-                  enctype="multipart/form-data">
-            {% csrf_token %}
-
-            <div class="form-row" >
-
-            </div>
-
-
-          </form> -->
+        
           <form method="post">
             {% csrf_token %}
-            <!-- <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="Mango" id="mango" name="fruits">
-              <label class="form-check-label" for="mango">Mango</label>
-            </div> -->
-
+            
             <table class="table table-hover">
               <thead>
                 <tr class="text-capitalize">
